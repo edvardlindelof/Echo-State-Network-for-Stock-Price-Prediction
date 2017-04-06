@@ -50,5 +50,17 @@ class TestEchoStateNetwork(unittest.TestCase):
         self.assertEqual(z.shape[0], 7)
         self.assertEqual(z.shape[1], 1)
 
+    def test_prediction_iteration(self):
+        W_in = np.random.rand(4, 3)
+        u = np.random.rand(2, 1)
+        W = np.random.rand(4, 4)
+        x = np.random.rand(4, 1)
+        W_out = np.random.rand(1, 7)
+        alpha = 0.5
+        x_next, y = self.esn._prediction_iteration(W_in, u, W, x, alpha, W_out)
+        self.assertEqual(x_next.shape[0], 4)
+        self.assertEqual(x_next.shape[1], 1)
+        self.assertTrue(y.shape == ())
+
 if __name__ == '__main__':
     unittest.main()
