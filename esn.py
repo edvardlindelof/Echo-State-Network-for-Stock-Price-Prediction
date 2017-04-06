@@ -5,7 +5,7 @@ class EchoStateNetwork():
     def __init__(self, reservoir_size=10):
         self.reservoir_size = reservoir_size
 
-    def fit(self, U, y):
+    def fit(self, U, y):  # TODO update alpha somehow
         y = y.reshape(-1, 1)
 
         # TODO initial values
@@ -23,6 +23,16 @@ class EchoStateNetwork():
             Z[i] = z.reshape(1, -1)
 
         self.W_out = np.linalg.lstsq(Z, y)[0].reshape(1, -1)
+        self._x_init = x
+
+    def predict(self, U):
+        x = self._x_init
+        y = np.empty(U.shape[0]).reshape(-1, 1)
+        for i in range(0, U.shape[0]):
+            u = U[i].reshape(-1, 1)
+            x, y[i] = self._prediction_iteration(self.W_in, u, self.W,
+                                                 x, self.alpha, self.W_out)
+        return y
 
     def _rms_error(self, y, y_target):
         m = y.shape[0]
