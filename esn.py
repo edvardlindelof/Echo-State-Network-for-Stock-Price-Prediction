@@ -2,8 +2,27 @@ import numpy as np
 
 class EchoStateNetwork():
 
-    def __init__(self):
-        self.wolo = "hej"
+    def __init__(self, reservoir_size=10):
+        self.reservoir_size = reservoir_size
+
+    def fit(self, U, y):
+        y = y.reshape(-1, 1)
+
+        # TODO initial values
+        self.W_in = np.random.rand(U.shape[1] + 1) - 0.5
+        self.W = np.random.rand(self.reservoir_size, self.reservoir_size) - 0.5
+        self.alpha = 0.5
+
+        x = np.zeros(self.reservoir_size).reshape(-1, 1)  # TODO initial value
+        Z_width = 1 + U.shape[1] + self.reservoir_size
+        Z_height = U.shape[0]
+        Z = np.empty((Z_height, Z_width))
+        for i in range(0, Z_height):
+            u = U[i].reshape(-1, 1)
+            x, z = self._training_iteration(self.W_in, u, self.W, x, self.alpha)
+            Z[i] = z.reshape(1, -1)
+
+        self.W_out = np.linalg.lstsq(Z, y)[0].reshape(1, -1)
 
     def _rms_error(self, y, y_target):
         m = y.shape[0]

@@ -62,5 +62,13 @@ class TestEchoStateNetwork(unittest.TestCase):
         self.assertEqual(x_next.shape[1], 1)
         self.assertTrue(y.shape == ())
 
+    def test_fit(self):
+        U = np.random.rand(4, 5)
+        y = np.random.rand(4)
+        esn = EchoStateNetwork(3)
+        esn.fit(U, y)
+        self.assertEqual(esn.W_out.shape[0], 1)
+        self.assertEqual(esn.W_out.shape[1], 9)
+
 if __name__ == '__main__':
     unittest.main()
