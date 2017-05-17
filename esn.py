@@ -33,7 +33,9 @@ class EchoStateNetwork():
         """
 
         self.W = (np.random.rand(self.reservoir_size, self.reservoir_size) - 0.5)
-        sparsity_W = np.random.rand(self.W.shape[0],self.W.shape[1]) > 0.2
+        random_ones_W = np.random.rand(self.W.shape[0],self.W.shape[1])
+        symmetric_random_W = (random_ones_W + random_ones_W.T) / 2.
+        sparsity_W = symmetric_random_W < (5. / self.reservoir_size)  # ie 5 neighbours on average
         self.W = self.W * sparsity_W
 
         ## Introduces Spectral radius tuning
@@ -41,7 +43,6 @@ class EchoStateNetwork():
         abs_eig_W = np.absolute(eig_W)
         max_W = abs_eig_W.max()
         self.W = self.W / max_W
-
         print("The spectral radius is %.3f, Should be less than 1, for stable network" % max_W)
 
         x = np.zeros(self.reservoir_size).reshape(-1, 1)  + 0# TODO initial value
