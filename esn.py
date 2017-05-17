@@ -1,13 +1,9 @@
 import numpy as np
-import matplotlib
-matplotlib.use('GTKAgg')
-import matplotlib.pyplot as plt
-
 
 
 class EchoStateNetwork():
 
-    def __init__(self, reservoir_size=10, alpha=1., beta=0., first_column_amplifier = 2):
+    def __init__(self, reservoir_size=10, alpha=1, beta=1e-2, first_column_amplifier = 2):
 
         self.reservoir_size = reservoir_size
         self.alpha = alpha
@@ -43,7 +39,6 @@ class EchoStateNetwork():
         abs_eig_W = np.absolute(eig_W)
         max_W = abs_eig_W.max()
         self.W = self.W / max_W
-        print("The spectral radius is %.3f, Should be less than 1, for stable network" % max_W)
 
         x = np.zeros(self.reservoir_size).reshape(-1, 1)  + 0# TODO initial value
 
