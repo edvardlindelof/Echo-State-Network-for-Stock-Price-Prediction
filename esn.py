@@ -55,7 +55,7 @@ class EchoStateNetwork():
         x_tilde = self._x_tilde(W_in, u, W, x)
         x_next = self._x_next(alpha, x, x_tilde)
         z = self._z(u, x_next)
-        return x, z
+        return x_next, z
 
     def _prediction_iteration(self, W_in, u, W, x, alpha, W_out):
         x_tilde = self._x_tilde(W_in, u, W, x)
