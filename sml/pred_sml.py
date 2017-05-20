@@ -1,3 +1,6 @@
+import os, sys
+sys.path.append(os.path.join(os.path.dirname(__file__), "../"))
+
 import numpy as np
 import matplotlib
 matplotlib.use('TKAgg')
@@ -13,7 +16,7 @@ from esn import EchoStateNetwork
 ## USING JUST THE ORIGINAL FEATURES
 ##
 
-raw_data = np.genfromtxt('SML_data_1', delimiter=' ', skip_header=1)
+raw_data = np.genfromtxt('sml/SML_data_1', delimiter=' ', skip_header=1)
 
 raw_data = raw_data[:, 2:]  # first two columns non-numeric
 
@@ -53,7 +56,7 @@ plt.show()
 ## USING AGGREGATED FEATURES AS WELL
 ##
 
-raw_data = np.genfromtxt('SML_data_1_aggregated', delimiter=', ')
+raw_data = np.genfromtxt('sml/SML_data_1_aggregated', delimiter=', ')
 
 data_list = raw_data
 data_arr = np.array(data_list)
@@ -92,7 +95,7 @@ plt.show()
 ## USING AGGREGATED FEATURES, RIDGE REGRESSION (no reservoir)
 ##
 
-raw_data = np.genfromtxt('SML_data_1_aggregated', delimiter=', ')
+raw_data = np.genfromtxt('sml/SML_data_1_aggregated', delimiter=', ')
 
 data_list = raw_data
 data_arr = np.array(data_list)
