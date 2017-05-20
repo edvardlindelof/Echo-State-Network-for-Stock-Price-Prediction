@@ -3,12 +3,13 @@ import numpy as np
 
 class EchoStateNetwork():
 
-    def __init__(self, reservoir_size=10, alpha=1, beta=1e-2, first_column_amplifier = 2):
+    def __init__(self, reservoir_size=10, alpha=1, beta=1e-2, first_column_amplifier=2, density_W=5.):
 
         self.reservoir_size = reservoir_size
         self.alpha = alpha
         self.beta = beta
         self.first_column_amplifier = first_column_amplifier
+        self.density_W = density_W  # average number of neighbours of a node
 
     def fit(self, U, y):
         y = y.reshape(-1, 1)
@@ -31,7 +32,7 @@ class EchoStateNetwork():
         self.W = (np.random.rand(self.reservoir_size, self.reservoir_size) - 0.5)
         random_ones_W = np.random.rand(self.W.shape[0],self.W.shape[1])
         symmetric_random_W = (random_ones_W + random_ones_W.T) / 2.
-        sparsity_W = symmetric_random_W < (5. / self.reservoir_size)  # ie 5 neighbours on average
+        sparsity_W = symmetric_random_W < (self.density_W / self.reservoir_size)
         self.W = self.W * sparsity_W
 
         ## Introduces Spectral radius tuning
